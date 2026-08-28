@@ -1,0 +1,687 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>rystemd Handbook</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-eea463e8.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                    </div>
+
+                    <h1 class="menu-title">rystemd Handbook</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/rystemd/rystemd" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p><strong>rystemd</strong> is a systemd reimplementation in Rust: a unit manager daemon, a
+<code>systemctl</code>-compatible CLI (<code>rystemctl</code>), and a terminal client (<code>rystemd-tui</code>).</p>
+<p>It speaks the same unit-file language as systemd and drives the same lifecycle
+events, so existing <code>.service</code>, <code>.timer</code>, <code>.socket</code>, <code>.target</code>, <code>.mount</code>,
+<code>.path</code>, and <code>.device</code> units are understood without translation. <code>rystemctl</code>
+mirrors the <code>systemctl</code> surface (<code>start</code>, <code>stop</code>, <code>status</code>, <code>enable</code>, timers,
+sockets, journal, and more).</p>
+<p>The design priorities are <strong>binary size</strong>, <strong>attack surface</strong>, and <strong>no hidden
+machinery</strong>:</p>
+<ul>
+<li>Synchronous, single-threaded poll loop — no async runtime (no tokio).</li>
+<li>Optional features compiled in only where they’re wanted: <code>socket</code>, <code>udev</code>,
+<code>dbus</code>, and <code>boot</code> (PID-1).</li>
+<li><code>LTO = "fat"</code>, <code>codegen-units = 1</code>, full strip — a small, auditable binary.</li>
+<li>cgroup v2 process supervision with a plain process-group fallback.</li>
+</ul>
+<p>Primary support is <strong>Linux</strong> (cgroups, udev/netlink, D-Bus system bus, and the
+PID-1 boot path are all Linux-native). Windows is supported for the
+manager/CLI/daemon compatibility port (Job Objects, named pipes, the Service
+Control Manager). See <a href="#compatibility--known-issues">Compatibility &amp; known issues</a>.</p>
+<p>The project is named after its intent: <strong>ry</strong> (Rust) + <strong>stemd</strong> (systemd).</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+<h2 id="from-source"><a class="header" href="#from-source">From source</a></h2>
+<pre><code class="language-sh">cargo build --release
+# binaries land in target/release/: rystemd, rystemctl, rystemd-tui
+</code></pre>
+<p>The workspace has three binaries:</p>
+<ul>
+<li><strong><code>rystemd</code></strong> — the unit-manager daemon.</li>
+<li><strong><code>rystemctl</code></strong> — the <code>systemctl</code>-compatible control CLI.</li>
+<li><strong><code>rystemd-tui</code></strong> — a live terminal client for a running manager.</li>
+</ul>
+<h2 id="homebrew-linux-fedorabazzite"><a class="header" href="#homebrew-linux-fedorabazzite">Homebrew (Linux, Fedora/Bazzite)</a></h2>
+<p><code>rystemd</code> is dogfooded on Fedora via a Homebrew tap. On an immutable host
+(Bazzite/Fedora Atomic) install the CLI through brew — not <code>rpm-ostree</code>:</p>
+<pre><code class="language-sh">brew tap rystemd/rystemd
+brew install rystemd
+</code></pre>
+<p><code>rustemd</code> is Linux-native, so this searches only the Linux formula.</p>
+<h2 id="feature-flags"><a class="header" href="#feature-flags">Feature flags</a></h2>
+<p><code>rystemd</code> is a library + binary crate. Its Cargo features are:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Feature</th><th>Default</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td><code>socket</code></td><td>yes</td><td><code>.socket</code> units, <code>Listen*=</code> socket activation</td></tr>
+<tr><td><code>udev</code></td><td>yes (Linux)</td><td>kernel device discovery (netlink + sysfs)</td></tr>
+<tr><td><code>dbus</code></td><td>yes (Linux)</td><td><code>org.rystemd.Manager1</code> + systemd1 D-Bus surface</td></tr>
+<tr><td><code>boot</code></td><td>no</td><td>PID-1 boot (mount API fs, early boot, poweroff)</td></tr>
+</tbody>
+</table>
+</div>
+<p>Build a PID-1 image with <code>--features boot</code>.</p>
+<h2 id="verification"><a class="header" href="#verification">Verification</a></h2>
+<pre><code class="language-sh">rystemd daemon --user        # run a per-user manager
+rystemctl --user status      # ask it for unit status
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="handbook"><a class="header" href="#handbook">Handbook</a></h1>
+<p>Worked examples for writing units and driving the manager with <code>rystemctl</code>.
+On Linux, <code>rystemctl</code> may be symlinked as <code>systemctl</code>; the examples use that
+compatibility name.</p>
+<p>Linux examples assume <code>./target/release/rystemd daemon --user</code> is running.
+Windows examples use either <code>rystemd.exe daemon --user</code> or the native
+SCM host.</p>
+<h2 id="1-a-basic-service"><a class="header" href="#1-a-basic-service">1. A basic service</a></h2>
+<p><code>~/.config/systemd/user/hello.service</code> (user mode):</p>
+<pre><code class="language-ini">[Unit]
+Description=Hello world service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/env sh -c 'while true; do echo hello; sleep 5; done'
+Restart=on-failure
+</code></pre>
+<pre><code class="language-sh">systemctl --user start hello
+systemctl --user status hello   # shows the captured log ring
+systemctl --user stop hello
+</code></pre>
+<p><code>Type=simple</code> goes active immediately after spawning. On Linux the unit’s
+<strong>cgroup v2</strong> is the supervision boundary, so <code>stop</code> SIGTERMs (then SIGKILLs)
+the whole tree — even children that double-fork out of their process group.</p>
+<h2 id="2-a-oneshot-state-service"><a class="header" href="#2-a-oneshot-state-service">2. A oneshot “state” service</a></h2>
+<p>Use <code>RemainAfterExit=yes</code> when a service represents <em>state</em> rather than a
+long-running process:</p>
+<pre><code class="language-ini">[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/touch /tmp/rystemd-flag
+ExecStop=/usr/bin/rm -f /tmp/rystemd-flag
+</code></pre>
+<pre><code class="language-sh">systemctl --user start flag.service
+systemctl --user is-active flag.service   # -&gt; active
+systemctl --user stop flag.service        # runs ExecStop
+</code></pre>
+<p>Without <code>RemainAfterExit=yes</code>, a oneshot goes <code>inactive(dead)</code> after it runs —
+exactly like systemd.</p>
+<h2 id="3-a-forking-daemon-pidfile"><a class="header" href="#3-a-forking-daemon-pidfile">3. A forking daemon (PIDFile)</a></h2>
+<pre><code class="language-ini">[Service]
+Type=forking
+ExecStart=/usr/sbin/mydaemon
+PIDFile=/run/mydaemon.pid
+</code></pre>
+<p>The manager waits for the <code>ExecStart</code> parent to exit, then reads <code>PIDFile</code> to
+find the surviving child. (<code>PIDFile</code> names the main pid; the cgroup still
+tracks the full tree for cleanup.)</p>
+<h2 id="4-a-timer"><a class="header" href="#4-a-timer">4. A timer</a></h2>
+<p>Timers are separate units that trigger a matching service unit.</p>
+<p><code>~/.config/systemd/user/daily-backup.timer</code>:</p>
+<pre><code class="language-ini">[Timer]
+OnCalendar=*-*-* 03:00:00
+Persistent=yes
+
+[Install]
+WantedBy=timers.target
+</code></pre>
+<p><code>daily-backup.service</code> (same base name, so the timer finds it automatically):</p>
+<pre><code class="language-ini">[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/backup.sh
+</code></pre>
+<pre><code class="language-sh">systemctl --user start daily-backup.timer
+systemctl --user list-timers
+</code></pre>
+<p>The calendar engine accepts the full systemd grammar — <code>daily</code>, <code>weekly</code>,
+<code>Mon..Fri 09:00</code>, <code>*:0/15</code> (every 15 minutes), <code>2026-08-21 09:00</code> (a one-shot
+date), lists and steps (<code>Mon,Wed 09:00/2</code>). Monotonic forms
+(<code>OnBootSec=5min</code>, <code>OnUnitActiveSec=1h</code>) work too.</p>
+<h2 id="5-enabling-at-boot--login"><a class="header" href="#5-enabling-at-boot--login">5. Enabling at boot / login</a></h2>
+<p><code>enable</code>/<code>disable</code>/<code>is-enabled</code> mirror systemd’s <code>[Install]</code> symlink model:</p>
+<pre><code class="language-ini">[Install]
+WantedBy=default.target
+</code></pre>
+<pre><code class="language-sh">systemctl --user enable hello.service     # creates a .wants symlink
+systemctl --user is-enabled hello.service # -&gt; enabled
+systemctl --user disable hello.service
+</code></pre>
+<p><code>RequiredBy=</code> creates a <code>.requires</code> symlink; <code>Alias=</code> and <code>Also=</code> are honored.</p>
+<h2 id="6-dependencies"><a class="header" href="#6-dependencies">6. Dependencies</a></h2>
+<pre><code class="language-ini">[Unit]
+Description=Web app
+Requires=postgres.service
+After=postgres.service
+
+[Service]
+ExecStart=/usr/local/bin/webapp
+</code></pre>
+<p><code>Requires</code> starts the dependency (and pulls it down if it fails); <code>Wants</code>
+starts it but ignores failure; <code>After</code> only orders, it doesn’t imply a start.
+<code>Conflicts</code> stops the named unit when this one starts.</p>
+<h2 id="7-drop-ins-and-specifiers"><a class="header" href="#7-drop-ins-and-specifiers">7. Drop-ins and specifiers</a></h2>
+<p>Override a stock unit without editing it — put a file in <code>hello.service.d/</code>:</p>
+<pre><code class="language-ini"># ~/.config/systemd/user/hello.service.d/override.conf
+[Service]
+Environment=GREETING=howdy
+</code></pre>
+<p>Specifiers expand at load time: <code>%n</code> (name), <code>%p</code> (prefix before <code>@</code>), <code>%i</code>
+(instance), <code>%u</code>/<code>%g</code> (user/group), <code>%h</code> (home), <code>%t</code> (runtime dir), <code>%%</code>
+(literal <code>%</code>). Instanced units (<code>web@1.service</code>) use <code>%i</code>.</p>
+<h2 id="8-programmatic-control-no-shell-no-d-bus"><a class="header" href="#8-programmatic-control-no-shell-no-d-bus">8. Programmatic control (no shell, no D-Bus)</a></h2>
+<pre class="playground"><code class="language-rust">use rystemd::control::{Control, SocketClient};
+
+fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // system mode (false) or user mode (true).
+    let mut ctl = SocketClient::for_mode(true)?;
+
+    ctl.start(&amp;["hello.service"])?;
+    ctl.restart(&amp;["hello.service"])?;
+
+    for s in ctl.status(&amp;["hello.service"])? {
+        println!("{}: {}/{}", s.name, s.active, s.sub);
+    }
+
+    ctl.stop(&amp;["hello.service"])?;
+    Ok(())
+}</code></pre>
+<p>Both <code>Manager</code> (in-process) and <code>SocketClient</code> (remote) implement the same
+<code>Control</code> trait, so you can write against <code>&amp;mut dyn Control</code> and swap the
+backend freely.</p>
+<hr>
+<h2 id="filesystem-layout"><a class="header" href="#filesystem-layout">Filesystem layout</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th></th><th>system</th><th>user</th></tr>
+</thead>
+<tbody>
+<tr><td>unit path</td><td><code>/etc/systemd/system</code> → <code>/run/...</code> → <code>/usr/lib/...</code></td><td><code>~/.config/systemd/user</code> → <code>/etc/systemd/user</code> → <code>/usr/lib/systemd/user</code></td></tr>
+<tr><td><code>[Install]</code> dir</td><td><code>/etc/systemd/system</code></td><td><code>~/.config/systemd/user</code></td></tr>
+<tr><td>runtime</td><td><code>/run</code></td><td><code>$XDG_RUNTIME_DIR</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Every path is overridable for tests via <code>RYSTEMD_UNIT_PATH</code>,
+<code>RYSTEMD_CONFIG_DIR</code>, <code>RYSTEMD_RUNTIME_DIR</code>, and <code>RYSTEMD_SOCKET</code>.</p>
+<h2 id="tui--shell-completions"><a class="header" href="#tui--shell-completions">TUI + shell completions</a></h2>
+<ul>
+<li><strong>TUI</strong> — <code>rystemd-tui --user</code> connects to a running manager over the
+<code>Control</code> API (it detects the socket; it never starts a second daemon) and
+shows tabbed live views: Units / Services / Timers / Unit files, with a
+status pane and single-key actions (<code>s</code> start, <code>x</code> stop, <code>r</code> restart, …).</li>
+<li><strong>Completions</strong> — <code>rystemctl completions &lt;bash|fish|zsh|powershell|nushell&gt;</code>
+emits a completion script for that shell.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="a-basic-service"><a class="header" href="#a-basic-service">A basic service</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="a-oneshot-state-service"><a class="header" href="#a-oneshot-state-service">A oneshot state service</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="a-forking-daemon"><a class="header" href="#a-forking-daemon">A forking daemon</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="a-timer"><a class="header" href="#a-timer">A timer</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="enabling-at-boot"><a class="header" href="#enabling-at-boot">Enabling at boot</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="dependencies"><a class="header" href="#dependencies">Dependencies</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="drop-ins-and-specifiers"><a class="header" href="#drop-ins-and-specifiers">Drop-ins and specifiers</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="programmatic-control"><a class="header" href="#programmatic-control">Programmatic control</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="architecture"><a class="header" href="#architecture">Architecture</a></h1>
+<p>rystemd is built as three crates in one workspace, plus a small internal <code>repo</code>
+module:</p>
+<ul>
+<li><strong><code>rystemd</code></strong> — the library + daemon binary. Everything else builds on it.</li>
+<li><strong><code>rystemctl</code></strong> — the <code>systemctl</code>-compatible CLI.</li>
+<li><strong><code>rystemd-tui</code></strong> — the terminal client.</li>
+</ul>
+<h2 id="the-manager"><a class="header" href="#the-manager">The manager</a></h2>
+<p><code>Manager</code> drives a synchronous, single-threaded poll loop (no tokio). The loop
+iterates on a bounded timeout, draining:</p>
+<ul>
+<li>control requests over the IPC channel,</li>
+<li>D-Bus requests, events, and unit snapshots (Linux, <code>dbus</code> feature),</li>
+<li>timer-wheel elapses (<code>fire_timer</code>),</li>
+<li>path-watch polls (<code>.path</code> units),</li>
+<li>SIGCHLD reaps and job resolution (<code>process_jobs</code>).</li>
+</ul>
+<p>Jobs (start/stop/restart) encode the lifecycle transition and the <code>Wants=</code>,
+<code>Requires=</code>, <code>After=</code>, <code>Before=</code>, and <code>Conflicts=</code> ordering graph. A
+per-unit-type VTable (<code>unit_type</code> → <code>UnitType</code> trait) handles the concrete
+<code>start</code>/<code>stop</code> for each kind.</p>
+<h2 id="unit-types"><a class="header" href="#unit-types">Unit types</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Kind</th><th>Dir/file</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td><code>.service</code></td><td><code>(suffix)</code></td><td><code>Type=</code> simple/exec/idle/oneshot/forking/notify/dbus</td></tr>
+<tr><td><code>.socket</code></td><td><code>[Socket]</code></td><td><code>ListenStream=/Datagram=/Netlink=/SequentialPacket=</code>, inetd-style activation</td></tr>
+<tr><td><code>.timer</code></td><td><code>[Timer]</code></td><td>calendar + monotonic triggers</td></tr>
+<tr><td><code>.target</code></td><td>—</td><td>grouping only</td></tr>
+<tr><td><code>.mount</code></td><td><code>[Mount]</code></td><td><code>mount(2)</code> in <code>[Mount]</code></td></tr>
+<tr><td><code>.path</code></td><td><code>[Path]</code></td><td><code>PathExists=</code>, <code>DirectoryNotEmpty=</code>, <code>PathChanged=</code>, <code>PathExistsGlob=</code></td></tr>
+<tr><td><code>.device</code></td><td>udev</td><td>runtime device units (Linux)</td></tr>
+</tbody>
+</table>
+</div>
+<p>The parser lives in <code>unit/</code> with a <code>parse::RawUnitFile</code> layer; directives are
+pulled via <code>unit_scalar</code>/<code>list_of</code> helpers so unsupported directives fail
+loudly or are parsed-and-warned, never silently lost.</p>
+<h2 id="platform"><a class="header" href="#platform">platform</a></h2>
+<p><code>platform/</code> abstracts the OS. Linux uses <code>nix</code>; Windows uses direct Win32
+bindings. The manager never touches raw syscalls directly — everything is
+behind this layer (process spawn + cgroups/Job Objects, sandboxing mounts,
+signal handling, udev/netlink, D-Bus, boot).</p>
+<h2 id="repo"><a class="header" href="#repo">repo</a></h2>
+<p>A typed DAO (<code>UnitDefinition</code>, not unit-file text) over a directory backend.
+Mutations are atomic (temp + rename); reads are never locked. Single process
+by design. <code>rystemctl repo</code> and the manager share it so clients can inspect or
+edit unit files in place.</p>
+<h2 id="control"><a class="header" href="#control">Control</a></h2>
+<p><code>Control</code> is a single interface with two implementations: the in-process
+<code>Manager</code> and the remote <code>SocketClient</code>. The manager also exposes the same
+surface over JSON IPC and (Linux, <code>dbus</code>) over D-Bus.
+This is what <code>rystemctl</code>, <code>rystemd-tui</code>, and D-Bus clients all speak.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="linux-integration"><a class="header" href="#linux-integration">Linux integration</a></h1>
+<p>Linux is the primary target and carries the platform-specific features that
+make rystemd a real systemd work-alike.</p>
+<h2 id="process-supervision"><a class="header" href="#process-supervision">Process supervision</a></h2>
+<p>A service runs in its own <strong>cgroup v2</strong> subtree when available; the spawned
+process adopts itself into the unit’s cgroup before exec, so <code>cgroup.kill</code>
+reaches every descendant. When cgroups aren’t usable the fallback is a
+<strong>process group</strong>: the child becomes a session leader so <code>kill(-pid, sig)</code>
+reaches the tree, and it can acquire a controlling terminal (which
+getty/login programs require). As PID 1 (or with the daemon running as root)
+rystemd sets itself as a subreaper and sweeps orphaned / double-forked
+children.</p>
+<h2 id="socket-activation"><a class="header" href="#socket-activation">Socket activation</a></h2>
+<p><code>.socket</code> units bind listeners and activate a matching service on the first
+connection. On Linux the listeners are passed to the child via <code>LISTEN_FDS</code>
+/ <code>LISTEN_PID</code> (the standard systemd contract), so inetd-style handoff works.
+Supported <code>Listen*</code> directives:</p>
+<ul>
+<li><code>ListenStream=</code> — Unix-domain or TCP (systemd-*.socket uses this)</li>
+<li><code>ListenDatagram=</code> — e.g. <code>systemd-journald.socket</code></li>
+<li><code>ListenNetlink=</code> — e.g. <code>systemd-udevd-kernel.socket</code></li>
+<li><code>ListenSequentialPacket=</code> — e.g. <code>systemd-udevd-control.socket</code></li>
+</ul>
+<p><code>systemd-udevd/sockets</code>, journald, and coredump all depend on these; without
+them udev receives no kernel events.</p>
+<h2 id="path-activation"><a class="header" href="#path-activation">Path activation</a></h2>
+<p><code>.path</code> units watch filesystem paths and activate a matching service
+(<code>Unit=</code>) on a trigger — <code>PathExists</code>, <code>PathExistsGlob</code>, <code>PathChanged</code>,
+<code>DirectoryNotEmpty</code>, with <code>MakeDirectory=</code> support. The watch is stat-based
+(polled in the manager’s loop; no inotify yet).</p>
+<h2 id="mount--device"><a class="header" href="#mount--device">Mount + device</a></h2>
+<p><code>.mount</code> units call <code>mount(2)</code>/<code>umount(2)</code>. <code>.device</code> units are discovered
+from sysfs and tracked via netlink uevents (<code>udev</code> feature), so
+<code>After=/Requires=</code> ordering on device paths resolves.</p>
+<h2 id="d-bus"><a class="header" href="#d-bus">D-Bus</a></h2>
+<p>With the <code>dbus</code> feature, rystemd owns <code>org.rystemd.Manager1</code> on the system
+(or user) bus and — when the well-known name is free, i.e. no real systemd is
+present — also serves an <code>org.freedesktop.systemd1</code>-compatible surface:
+<code>Version</code>, <code>ListUnits</code>, <code>GetUnit</code>/<code>LoadUnit</code>, <code>ListJobs</code>,
+<code>GetUnitProcesses</code>, per-unit <code>org.freedesktop.systemd1.Unit</code> objects, and
+<code>UnitNew</code>/<code>UnitRemoved</code>. The systemd1 surface uses systemd’s <code>bus_label_escape</code>
+object-path encoding.</p>
+<h2 id="pid-1-boot-boot-feature"><a class="header" href="#pid-1-boot-boot-feature">PID-1 boot (<code>boot</code> feature)</a></h2>
+<p>With <code>--features boot</code>, <code>rystemd</code> can run as PID 1: it mounts the API/virtual
+filesystems (<code>/proc</code>, <code>/sys</code>, <code>/dev</code>, <code>/run</code>, <code>/tmp</code>), runs early-boot
+configuration, boots the default target, supervises everything, and powers the
+machine off on shutdown. This is the VM-first / initramfs path toward a
+drop-in init (see <code>scripts/</code>).</p>
+<h2 id="environment-overrides-for-testing"><a class="header" href="#environment-overrides-for-testing">Environment overrides for testing</a></h2>
+<p><code>RYSTEMD_UNIT_PATH</code>, <code>RYSTEMD_CONFIG_DIR</code>, <code>RYSTEMD_RUNTIME_DIR</code>,
+<code>RYSTEMD_SOCKET</code>, and <code>RYSTEMD_JOURNAL_DIR</code> repoint the manager at a scratch
+tree so integration tests run the real daemon against an isolated layout.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="windows-port"><a class="header" href="#windows-port">Windows port</a></h1>
+<p>Windows is supported as a compatibility port of the manager, CLI, and TUI —
+systemd-like semantics backed by Win32 primitives. Linux is the primary
+target; the Windows port exists so the manager + <code>rystemctl</code>/<code>rystemd-tui</code>
+stack runs there too.</p>
+<h2 id="modes"><a class="header" href="#modes">Modes</a></h2>
+<h3 id="per-user-mode"><a class="header" href="#per-user-mode">Per-user mode</a></h3>
+<pre><code class="language-powershell">cargo build --release
+.\target\release\rystemd.exe daemon --user
+</code></pre>
+<p>Unit search order (higher precedence first):</p>
+<ul>
+<li><code>%LOCALAPPDATA%\rystemd\config</code></li>
+<li><code>%LOCALAPPDATA%\rystemd\units</code></li>
+</ul>
+<pre><code class="language-powershell">.\target\release\rystemctl.exe --user daemon-reload
+.\target\release\rystemctl.exe --user start hello.service
+.\target\release\rystemctl.exe --user status hello.service
+</code></pre>
+<p>A minimal service unit uses native Windows programs:</p>
+<pre><code class="language-ini">[Unit]
+Description=Windows worker
+
+[Service]
+Type=simple
+ExecStart=C:\Tools\worker.exe --serve
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+</code></pre>
+<p>The process and its descendants run in a Win32 <strong>Job Object</strong>; <code>stop</code>
+terminates the Job Object, and manager exit closes every remaining job.</p>
+<h2 id="scm-system-mode"><a class="header" href="#scm-system-mode">SCM system mode</a></h2>
+<p>From an elevated terminal:</p>
+<pre><code class="language-powershell">rystemd.exe service install
+sc.exe start rystemd
+rystemctl.exe list-units
+sc.exe stop rystemd
+rystemd.exe service uninstall
+</code></pre>
+<p><code>service install --manual</code> for demand start; <code>--name</code> / <code>--display-name</code> for a
+custom registration. System units live under:</p>
+<ul>
+<li><code>%ProgramData%\rystemd\config</code></li>
+<li><code>%ProgramData%\rystemd\units</code></li>
+</ul>
+<h2 id="tcp-socket-trigger"><a class="header" href="#tcp-socket-trigger">TCP socket trigger</a></h2>
+<pre><code class="language-ini"># api.socket
+[Socket]
+ListenStream=127.0.0.1:8080
+Service=api.service
+</code></pre>
+<p>Starting <code>api.socket</code> binds the TCP listener; a pending connection activates
+<code>api.service</code>. The listener stays owned by rystemd for this launch-on-connection
+model (no <code>LISTEN_FDS</code> handoff on Windows). Unix-domain listeners are not
+supported on Windows.</p>
+<h2 id="windows-compatibility-table"><a class="header" href="#windows-compatibility-table">Windows compatibility table</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Capability</th><th>Windows MVP</th></tr>
+</thead>
+<tbody>
+<tr><td><code>Type=simple</code>, <code>exec</code>, <code>idle</code>, <code>oneshot</code></td><td>Supported</td></tr>
+<tr><td><code>.timer</code>, <code>.target</code></td><td>Supported</td></tr>
+<tr><td>TCP <code>.socket</code> trigger</td><td>Supported; no child socket handoff</td></tr>
+<tr><td><code>MemoryMax=</code>, <code>TasksMax=</code></td><td>Win32 Job Object limits</td></tr>
+<tr><td><code>Type=forking</code>, <code>notify</code>, <code>dbus</code></td><td>Explicit error</td></tr>
+<tr><td><code>User=</code>, <code>Group=</code></td><td>Explicit error</td></tr>
+<tr><td><code>MemoryHigh=</code>, <code>CPUWeight=</code>, <code>KillMode=process</code></td><td>Explicit error</td></tr>
+<tr><td>Unix sockets, cgroups, mounts, devices, boot</td><td>Linux only</td></tr>
+</tbody>
+</table>
+</div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="compatibility--known-issues"><a class="header" href="#compatibility--known-issues">Compatibility &amp; known issues</a></h1>
+<p>rystemd understands the systemd unit language and lifecycle, but it is a
+reimplementation — a few areas are deliberately partial. The full, current
+matrix lives in <a href="https://github.com/fralondale/rustemd/blob/main/KNOWN_ISSUES.md"><code>KNOWN_ISSUES.md</code></a>; the summary below is the short version.</p>
+<h2 id="unit-types-1"><a class="header" href="#unit-types-1">Unit types</a></h2>
+<p>Supported: <code>.service</code>, <code>.socket</code>, <code>.timer</code>, <code>.target</code>, <code>.mount</code>, <code>.path</code>,
+<code>.device</code>.</p>
+<p>Not yet supported:</p>
+<ul>
+<li><code>.slice</code> / <code>.scope</code> — the cgroup hierarchy (<code>user.slice</code>, <code>app.slice</code>,
+<code>session.slice</code>);</li>
+<li><code>.automount</code>;</li>
+</ul>
+<p>These are the main gap for a strict drop-in on a modern desktop, which leans
+heavily on slices.</p>
+<h2 id="sandbox-directives"><a class="header" href="#sandbox-directives">Sandbox directives</a></h2>
+<p>Many hardening directives are parsed but not (yet) enforced, and load with a
+warning rather than failing: <code>SystemCallFilter</code>, <code>ProtectKernelModules</code>,
+<code>PrivateDevices</code>, <code>RestrictAddressFamilies</code>, <code>MemoryDenyWriteExecute</code>,
+<code>LockPersonality</code>, <code>DeviceAllow</code>, and others. Services that rely on them run
+but without that particular isolation.</p>
+<h2 id="condition--assertion-support"><a class="header" href="#condition--assertion-support">Condition / assertion support</a></h2>
+<p>A working set of <code>Condition*=</code>. A few less-common kinds
+(<code>ConditionVirtualization</code>, <code>ConditionNeedsUpdate</code>, <code>ConditionSecurity</code>,
+<code>ConditionPathIsManifest</code>, <code>ConditionKernelCommandLine</code>, <code>ConditionCredential</code>)
+are parsed but always-false/always-true, so units keyed on them will either
+always or never load.</p>
+<h2 id="timeouts--limits"><a class="header" href="#timeouts--limits">Timeouts &amp; limits</a></h2>
+<p><code>TimeoutStopFailureMode=</code> (used widely on Fedora), <code>TimeoutSec=</code> and a few
+<code>LimitEXT*</code> relaxations are not fully honored. Some desktop services
+(<code>user@1000.service</code>) are heavy on <code>PAMName</code>, <code>KeyringMode</code>, <code>Delegate</code>,
+<code>ImportCredential</code>, and <code>RequiresMountsFor=</code> which are not yet implemented.</p>
+<h2 id="restart--readiness"><a class="header" href="#restart--readiness">Restart / readiness</a></h2>
+<p><code>Restart=</code> policies (<code>always</code>, <code>on-failure</code>, …) are implemented; the
+trigger-rate limit uses a fixed 5-in-10s window.</p>
+<h2 id="battery"><a class="header" href="#battery">Battery</a></h2>
+<p>These summary bullets are intentionally short. For the complete, version-
+specific matrix — every directive, its status, and which real Fedora units it
+affects — see KNOWN_ISSUES.md and the tiered boot-compatibility notes.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="development"><a class="header" href="#development">Development</a></h1>
+<h2 id="build--test"><a class="header" href="#build--test">Build &amp; test</a></h2>
+<pre><code class="language-sh">cargo build                 # debug
+cargo test --workspace      # unit + integration
+cargo clippy --workspace --all-targets -- -D warnings
+cargo fmt --all --check
+</code></pre>
+<p>The release profile is tuned for small, audit-friendly binaries:
+<code>opt-level = "z"</code>, <code>lto = "fat"</code>, <code>codegen-units = 1</code>, <code>panic = "abort"</code>,
+<code>strip = true</code>.</p>
+<h2 id="features"><a class="header" href="#features">Features</a></h2>
+<p>Build the full Linux surface (<code>socket</code> + <code>udev</code> + <code>dbus</code>) with <code>--all-features</code>,
+or add <code>boot</code> for the PID-1 path. The D-Bus integration test
+(<code>rystemd/tests/dbus.rs</code>) spins up a private <code>dbus-daemon</code> and exercises the
+<code>org.freedesktop.systemd1</code> surface end-to-end. Privileged tests
+(<code>rystemd/tests/privileged.rs</code>) cover <code>User=</code> privilege dropping and
+<code>PrivateTmp=</code> mount namespaces and need real root (CI runs them via <code>sudo</code>).</p>
+<h2 id="releases"><a class="header" href="#releases">Releases</a></h2>
+<p>Versioning follows the Git tag via <code>build.rs</code> (the tag is the source of truth;
+no version string is hardcoded). Tag and push with:</p>
+<pre><code class="language-sh">./release.sh patch          # prompts before pushing
+./release.sh patch -y       # tag + push in one step
+</code></pre>
+<p>The GitHub Actions release workflow builds Linux (<code>x86_64</code>, <code>aarch64</code>) and
+Windows packages, runs the full test gate (including the D-Bus and
+privileged suites), and attaches the artifacts to a GitHub Release. Windows
+packages: portable zip + MSI. Linux: tar.gz, .deb, .rpm.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>
