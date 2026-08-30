@@ -60,6 +60,30 @@ configuration, boots the default target, supervises everything, and powers the
 machine off on shutdown. This is the VM-first / initramfs path toward a
 drop-in init (see `scripts/`).
 
+### Real-root handoff (initramfs → deployment)
+
+When launched as the stage-2 init inside an initramfs, `rystemd` pivots out of
+the throwaway rootfs into the real deployment **before** reading any config.
+It is the classic `switch_root(8)` sequence:
+
+1. Detect an initramfs — `/` is a `rootfs`/`tmpfs`/`ramfs` mount (not a real
+   block-device root).
+2. If the upstream initramfs already staged the real root at `/sysroot` (an
+   ostree/dracut initramfs mounts the deployment + subvols there before
+   exec'ing stage-2), take over:
+   - `chdir("/sysroot")`, `mount(".", "/", MS_MOVE)`, `chroot(".")`, `chdir("/")`
+   - re-`exec` the manager against the real root, so it boots the real
+     `default.target` from the real `/etc`.
+3. Otherwise (no `/sysroot`, or a `--user`/container boot) it skips the handoff
+   and boots in place.
+
+This makes rystemd able to manage a real disk deployment rather than only a
+self-contained initramfs. On a real ostree host a few platform concerns remain
+goals, not shipped behavior: SELinux policy labeling and launching a graphical
+session / display manager are not yet provided. Validate a handoff boot on a
+throwaway VM with `scripts/vm-test.sh` / `live-vm.sh` before trusting it on a
+primary install.
+
 ## Environment overrides for testing
 
 `RYSTEMD_UNIT_PATH`, `RYSTEMD_CONFIG_DIR`, `RYSTEMD_RUNTIME_DIR`,
