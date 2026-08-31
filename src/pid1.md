@@ -25,7 +25,7 @@ with a graphical desktop at the end of it.
 | --- | --- |
 | Run as PID 1 inside an initramfs | ✅ works |
 | Early-boot config + boot default target | ✅ works |
-| **Switch out of the initramfs into the real disk (`/sysroot`)** | ✅ **now implemented** |
+| **Switch out of the initramfs into the real disk (`/sysroot`)** | ✅ **implemented** — including discovering the ostree deployment (`find_deployment`) and binding shared `/var` |
 | Power off / reboot as PID 1 | ✅ works |
 | Boot a graphical desktop (GNOME etc.) | ❌ not yet — boots to a text console |
 | SELinux enforcing on a real Fedora host | ⚠️ policy module ships; needs live iteration |

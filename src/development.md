@@ -103,25 +103,40 @@ sequence:
 
 1. `in_initramfs()` detects an initramfs (`/` is a `rootfs`/`tmpfs`/`ramfs`
    mount, read from `/proc/self/mounts`).
-2. `sysroot_mounted()` checks a real root is staged at `/sysroot` (an
-   ostree/dracut initramfs mounts the deployment + subvols there before
-   exec'ing stage-2).
-3. `handoff()` performs:
-   `chdir("/sysroot")` → `mount(".", "/", MS_MOVE)` → `chroot(".")` →
-   `chdir("/")` → re-`exec` the manager against the real root.
+2. `mount_sysroot_from_cmdline()` best-effort mounts the real root at `/sysroot`
+   from `root=`/`rootfstype=`/`rootflags=` when nothing else has — so rystemd
+   can be *its own* initramfs init (Model B), not only a post-pivot init
+   (Model A). If `/sysroot` is already staged (ostree/dracut mounted it) it's a
+   no-op.
+3. `find_deployment()` resolves the *actual deployment* under `/sysroot`: on a
+   plain root that *is* the sysroot; on an ostree sysroot it is
+   `ostree/deploy/<os>/deploy/<commit>` (newest such dir with `usr`+`etc`).
+4. `prepare_deployment()` binds the shared `/var` (which on ostree lives outside
+   the deployment, at the sysroot) into the deployment.
+5. `handoff(&deploy)` performs:
+   - bind-mount `deploy` onto itself (promote it to a mountpoint — MS_MOVE
+     requires a mount source),
+   - `chdir(deploy)` → `mount(".", "/", MS_MOVE)` → `chroot(".")`
+     → `chdir("/")` → re-`exec` the manager against the real root.
 
-If either condition is absent (`--user`, container, or the self-contained
+If the conditions are absent (`--user`, container, or the self-contained
 initramfs harness), the handoff is skipped and rystemd boots in place — so the
-normal harness flows are unchanged. The e2e test is `scripts/test-handoff.sh`
-(note: the MS_MOVE source must be `"."` — the cwd *is* `/sysroot` after the
-`chdir` — and the re-exec must NOT append an empty argv entry, since execv
-terminates on the null *pointer* and an empty string would be parsed as a CLI
-arg).
+normal harness flows are unchanged. The e2e is `scripts/test-handoff.sh`, which
+now stages the deployment in a **real ostree layout** (under
+`ostree/deploy/fedora/deploy/<commit>` with a sysroot-level `/var`) so discovery,
+`/var` prep, and the bind-promote-then-MOVE path are all exercised. Note two
+`switch_root` gotchas the test surfaces: MS_MOVE needs the source to be a
+mountpoint (hence the self-bind), and the re-exec must NOT append an empty argv
+entry — execv terminates on the null *pointer*, and an empty string would be
+parsed as a CLI arg.
 
 **Still open:** SELinux policy labeling (a foundation module ships in `pol/`;
 live enforcing iteration remains), and launching a graphical session / display
 manager. Validate a handoff boot on a throwaway VM before trusting it on a
-primary install.
+primary install. A full real-VM run on an actual ostree image is UI-tested by
+the scripts in [`docs/real-host-boot-vm.md`](https://github.com/rystemd/rystemd/blob/main/docs/real-host-boot-vm.md)
+(`prepare-realinit-vm.sh` + `boot-realinit-vm.sh`), which need a rootful Fedora
+host with libguestfs.
 
 ### Windows internals
 
