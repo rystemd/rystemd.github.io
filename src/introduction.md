@@ -1,26 +1,41 @@
 # Introduction
 
-**rystemd** is a systemd reimplementation in Rust: a unit manager daemon, a
-`systemctl`-compatible CLI (`rystemctl`), and a terminal client (`rystemd-tui`).
+**rystemd** is a small reimplementation of *what systemd does* — written in Rust
+and built around three pieces you already know how to use:
 
-It speaks the same unit-file language as systemd and drives the same lifecycle
-events, so existing `.service`, `.timer`, `.socket`, `.target`, `.mount`,
-`.path`, and `.device` units are understood without translation. `rystemctl`
-mirrors the `systemctl` surface (`start`, `stop`, `status`, `enable`, timers,
-sockets, journal, and more).
+- **`rystemd`** — the unit manager. It reads the same `.service`, `.timer`,
+  `.socket`, `.target` files you already write and runs them the way systemd
+  would.
+- **`rystemctl`** — a `systemctl`-compatible command line. `start`, `stop`,
+  `status`, `enable`, `list-timers`, and the rest work like you'd expect
+  (and it can be symlinked as `systemctl` if you like).
+- **`rystemd-tui`** — a live, tabbed terminal view of a running manager.
 
-The design priorities are **binary size**, **attack surface**, and **no hidden
-machinery**:
+If you've written a systemd unit file, you already know most of rystemd. If you
+haven't, that's fine too — this book is written for everyone from Sunday
+tinkerers to folks who've managed init systems for decades.
 
-- Synchronous, single-threaded poll loop — no async runtime (no tokio).
-- Optional features compiled in only where they're wanted: `socket`, `udev`,
-  `dbus`, and `boot` (PID-1).
-- `LTO = "fat"`, `codegen-units = 1`, full strip — a small, auditable binary.
-- cgroup v2 process supervision with a plain process-group fallback.
+## Why would you use it?
 
-Primary support is **Linux** (cgroups, udev/netlink, D-Bus system bus, and the
-PID-1 boot path are all Linux-native). Windows is supported for the
-manager/CLI/daemon compatibility port (Job Objects, named pipes, the Service
-Control Manager). See [Compatibility & known issues](compatibility.md).
+- **You want an init/unit manager you can read end-to-end.** rystemd is a few
+  thousand lines you can actually audit.
+- **You want a small footprint and no hidden machinery.** No async runtime, no
+  surprise dependencies — what's compiled in is what you asked for.
+- **You're curious how the pieces fit.** Because it mirrors systemd's managed
+  unit files and lifecycle, it's a great way to *see* the machinery that's
+  usually taken for granted.
 
-The project is named after its intent: **ry** (Rust) + **stemd** (systemd).
+## Where to go from here
+
+This book is written so you can dive straight to whatever concerns you:
+
+- Just want it running? → [Getting started](getting-started.md)
+- Writing units? → [Writing your first service](services.md)
+- Scheduling jobs? → [Timers: run things on a schedule](timers.md)
+- Starting things automatically? → [Starting services at boot](at-boot.md)
+- Using it as the machine's init? → [Booting the machine itself](pid1.md)
+- On Windows? → [Platforms: Linux & Windows](platforms.md)
+
+Linux is the primary, fully-featured target. Windows runs a compatibility port
+of the same stack. See [Compatibility & known issues](compatibility.md) for the
+honest state of both.

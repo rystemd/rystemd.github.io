@@ -2,56 +2,50 @@
 
 rystemd understands the systemd unit language and lifecycle, but it is a
 reimplementation — a few areas are deliberately partial. The full, current
-matrix lives in [`KNOWN_ISSUES.md`](https://github.com/fralondale/rustemd/blob/main/KNOWN_ISSUES.md); the summary below is the short version.
+matrix lives in
+[`KNOWN_ISSUES.md`](https://github.com/rystemd/rystemd/blob/main/KNOWN_ISSUES.md);
+this page is the honest short version.
 
 ## Unit types
 
-Supported: `.service`, `.socket`, `.timer`, `.target`, `.mount`, `.path`,
+**Supported:** `.service`, `.socket`, `.timer`, `.target`, `.mount`, `.path`,
 `.device`.
 
-Not yet supported:
+**Not yet:** `.slice` / `.scope` (the cgroup hierarchy — `user.slice`,
+`app.slice`, `session.slice`) and `.automount`. This is the main gap for a
+strict drop-in on a modern desktop, which leans on slices.
 
-- `.slice` / `.scope` — the cgroup hierarchy (`user.slice`, `app.slice`,
-  `session.slice`);
-- `.automount`;
+## Hardening directives
 
-These are the main gap for a strict drop-in on a modern desktop, which leans
-heavily on slices.
-
-## Sandbox directives
-
-Many hardening directives are parsed but not (yet) enforced, and load with a
-warning rather than failing: `ProtectKernelModules`, `DeviceAllow`,
-`RestrictNamespaces`, and others. Services that rely on them run but without
-that particular isolation. Enforced now (Linux/x86_64): the mount-namespace
-set (`PrivateTmp=`, `PrivateDevices=`, `ProtectHome=`, `ProtectSystem=`,
+Many sandbox directives are parsed and **enforced**: the mount-namespace set
+(`PrivateTmp=`, `PrivateDevices=`, `ProtectHome=`, `ProtectSystem=`,
 `ReadOnlyPaths=`), `NoNewPrivileges=`, `CapabilityBoundingSet=`,
 `AmbientCapabilities=`, and the seccomp set (`SystemCallFilter=`,
 `RestrictRealtime=`, `LockPersonality=`, `RestrictSUIDSGID=`,
 `RestrictAddressFamilies=`, `MemoryDenyWriteExecute=`).
 
-## Condition / assertion support
+A handful are **parsed but not yet enforced** — they load with a warning rather
+than failing, so your service still runs (just without that isolation):
+`ProtectKernelModules=`, `DeviceAllow=`, `RestrictNamespaces=`, and others.
+
+## Conditions & assertions
 
 A working set of `Condition*=`. A few less-common kinds
 (`ConditionVirtualization`, `ConditionNeedsUpdate`, `ConditionSecurity`,
-`ConditionPathIsManifest`, `ConditionKernelCommandLine`, `ConditionCredential`)
-are parsed but always-false/always-true, so units keyed on them will either
-always or never load.
+`ConditionPathIsManifest`, `ConditionKernelCommandLine`,
+`ConditionCredential`) are parsed but always-true/always-false, so units keyed
+on them will always or never load.
 
-## Timeouts & limits
+## Everything else, briefly
 
-`TimeoutStopFailureMode=` (used widely on Fedora), `TimeoutSec=` and a few
-`LimitEXT*` relaxations are not fully honored. Some desktop services
-(`user@1000.service`) are heavy on `PAMName`, `KeyringMode`, `Delegate`,
-`ImportCredential`, and `RequiresMountsFor=` which are not yet implemented.
+- **Timeouts & limits:** `TimeoutStopFailureMode=` (used widely on Fedora),
+  `TimeoutSec=`, and a few `LimitEXT*` relaxations aren't fully honored. Some
+  desktop services (`user@1000.service`) are heavy on `PAMName`,
+  `KeyringMode`, `Delegate`, `ImportCredential`, and `RequiresMountsFor=`,
+  which aren't implemented yet.
+- **Restart / readiness:** `Restart=` policies are implemented; the restart
+  rate limit uses a fixed 5-in-10s window.
 
-## Restart / readiness
-
-`Restart=` policies (`always`, `on-failure`, ...) are implemented; the
-trigger-rate limit uses a fixed 5-in-10s window.
-
-## Battery
-
-These summary bullets are intentionally short. For the complete, version-
-specific matrix — every directive, its status, and which real Fedora units it
-affects — see KNOWN_ISSUES.md and the tiered boot-compatibility notes.
+For the complete, version-specific matrix — every directive, its status, and
+which real Fedora units it affects — see
+[`KNOWN_ISSUES.md`](https://github.com/rystemd/rystemd/blob/main/KNOWN_ISSUES.md).
