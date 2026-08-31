@@ -1,6 +1,7 @@
 # Summary
 
 - [Introduction](introduction.md)
+- [Installing](install.md)
 - [Getting started](getting-started.md)
 - [Writing your first service](services.md)
 - [Timers: run things on a schedule](timers.md)

@@ -4,41 +4,25 @@ The quickest path to a running manager and seeing it work.
 
 ## Install
 
-Pick whichever fits your machine. All of these give you the three binaries
-`rystemd`, `rystemctl`, and `rystemd-tui`.
+First get the binaries — [Installing](install.md) covers every platform
+(Linux rpm/deb/brew/tarball, Windows Scoop/MSI/NuGet, or from source). All
+give you `rystemd`, `rystemctl`, and `rystemd-tui`.
 
-**Linux (Fedora / Bazzite / other immutable distros)** — via Homebrew:
+Here's the one-liner on the common hosts, with full detail on the install page:
 
 ```sh
-brew tap rystemd/rystemd
-brew install rystemd
-```
+# Fedora / RHEL (rpm)
+sudo dnf install ./rystemd-<ver>-1.x86_64.rpm
 
-> On an immutable host (Bazzite, Fedora Atomic, Silverblue) use brew rather
-> than `rpm-ostree` — it installs into Homebrew's own prefix without touching
-> the read-only system.
+# Debian / Ubuntu (deb)
+sudo apt install ./rystemd-<ver>-amd64.deb
 
-**Windows (Scoop)** — the tidy, PATH-installed choice:
+# Any Linux, or immutable Bazzite/Fedora-Atomic via brew
+brew tap rystemd/rystemd && brew install rystemd
 
-```powershell
+# Windows (Scoop)
 scoop bucket add rystemd https://github.com/rystemd/scoop-rystemd
 scoop install rystemd/rystemd
-```
-
-**Windows (NuGet)** — for automation / private feeds:
-
-```powershell
-nuget install rystemd -OutputDirectory ./rystemd-pkg
-```
-
-**Windows (MSI)** — a machine-wide installer: grab
-`rystemd-<ver>-x86_64.msi` from the [release page](https://github.com/rystemd/rystemd/releases).
-
-**Anything (from source):**
-
-```sh
-cargo build --release
-# binaries in target/release/: rystemd, rystemctl, rystemd-tui
 ```
 
 ## Start it, then poke it

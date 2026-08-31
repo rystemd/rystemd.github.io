@@ -12,18 +12,17 @@ and built around three pieces you already know how to use:
 - **`rystemd-tui`** — a live, tabbed terminal view of a running manager.
 
 If you've written a systemd unit file, you already know most of rystemd. If you
-haven't, that's fine too — this book is written for everyone from Sunday
-tinkerers to folks who've managed init systems for decades.
+haven't, the unit format is small enough to pick up as you go.
 
 ## Why would you use it?
 
 - **You want an init/unit manager you can read end-to-end.** rystemd is a few
-  thousand lines you can actually audit.
+  thousand lines you can actually audit, next to systemd's millions.
 - **You want a small footprint and no hidden machinery.** No async runtime, no
   surprise dependencies — what's compiled in is what you asked for.
 - **You're curious how the pieces fit.** Because it mirrors systemd's managed
-  unit files and lifecycle, it's a great way to *see* the machinery that's
-  usually taken for granted.
+  unit files and lifecycle, it's a way to *see* the machinery that's usually
+  taken for granted.
 
 ## Where to go from here
 
