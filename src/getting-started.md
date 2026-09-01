@@ -4,26 +4,8 @@ The quickest path to a running manager and seeing it work.
 
 ## Install
 
-First get the binaries — [Installing](install.md) covers every platform
-(Linux rpm/deb/brew/tarball, Windows Scoop/MSI/NuGet, or from source). All
-give you `rystemd`, `rystemctl`, and `rystemd-tui`.
-
-Here's the one-liner on the common hosts, with full detail on the install page:
-
-```sh
-# Fedora / RHEL (rpm)
-sudo dnf install ./rystemd-<ver>-1.x86_64.rpm
-
-# Debian / Ubuntu (deb)
-sudo apt install ./rystemd-<ver>-amd64.deb
-
-# Any Linux, or immutable Bazzite/Fedora-Atomic via brew
-brew tap rystemd/rystemd && brew install rystemd
-
-# Windows (Scoop)
-scoop bucket add rystemd https://github.com/rystemd/scoop-rystemd
-scoop install rystemd/rystemd
-```
+Install `rystemd`, `rystemctl`, and `rystemd-tui` for your platform — see
+[Installing](install.md).
 
 ## Start it, then poke it
 
