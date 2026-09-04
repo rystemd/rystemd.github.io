@@ -1,10 +1,7 @@
-# Timers: run things on a schedule
+# Timers
 
-A timer is a small unit that wakes up a matching service on a schedule. The
-service does the work; the timer decides when. Like systemd — if you know
-`systemd.timer`, this is the same idea.
-
-## A daily timer
+A timer starts a service on a schedule. Matching names pair automatically. For
+example, `daily-backup.timer` starts `daily-backup.service`.
 
 `~/.config/systemd/user/daily-backup.timer`:
 
@@ -17,8 +14,7 @@ Persistent=yes
 WantedBy=timers.target
 ```
 
-And the work it triggers — `daily-backup.service`, same base name so the timer
-finds it automatically:
+`~/.config/systemd/user/daily-backup.service`:
 
 ```ini
 [Service]
@@ -28,49 +24,29 @@ ExecStart=/usr/local/bin/backup.sh
 
 ```sh
 rystemctl --user start daily-backup.timer
-rystemctl --user list-timers       # see next fire time
+rystemctl --user list-timers
 rystemctl --user status daily-backup.timer
 ```
 
-`WantedBy=timers.target` under `[Install]` means "start me as a regular timer",
-so all your timers get grouped under one target.
+## Calendar values
 
-## Calendar schedules you can read
-
-`OnCalendar=` understands the full systemd calendar grammar. A few to get you
-started:
-
-| Schedule | Meaning |
+| Value | Meaning |
 | --- | --- |
-| `daily` | once a day (midnight) |
-| `weekly` | once a week (Mon 00:00) |
-| `Mon..Fri 09:00` | weekdays at 9am |
-| `*:0/15` | every 15 minutes |
-| `2026-08-21 09:00` | a one-shot date |
-| `Mon,Wed 09:00/2` | Monday & Wednesday, 9:00 and 9:02 |
+| `daily` | Every day at midnight |
+| `weekly` | Monday at midnight |
+| `Mon..Fri 09:00` | Weekdays at 09:00 |
+| `*:0/15` | Every 15 minutes |
+| `2026-08-21 09:00` | One specific date and time |
 
-`Persistent=yes` is worth knowing: if the machine was off at the scheduled time,
-it runs soon after it comes back, rather than skipping the missed run.
+`Persistent=yes` runs a missed calendar event after the manager starts again.
 
-## Timers that aren't calendar-based
-
-Not everything is "at a time of day." `OnBootSec=5min` runs five minutes after
-boot; `OnUnitActiveSec=1h` runs an hour after the *unit* last ran; combined.
-`OnBootSec` + `OnUnitActiveSec` is the classic "retry loop" recipe — a watchdog
-that re-runs some interval after its previous attempt.
+## Monotonic values
 
 ```ini
 [Timer]
 OnBootSec=5min
-OnUnitActiveSec=10min   # every 10 min after the last fire
+OnUnitActiveSec=10min
 ```
 
-## Did it run?
-
-```sh
-rystemctl --user list-timers                 # next elapse per timer
-rystemctl --user status daily-backup.service # last run + captured output
-```
-
-Next: make services (not just timers) start automatically —
-[Starting services at boot](at-boot.md).
+`OnBootSec=` is measured from boot. `OnUnitActiveSec=` is measured from the last
+activation.

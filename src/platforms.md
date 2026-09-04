@@ -1,54 +1,37 @@
-# Platforms: Linux & Windows
-
-rystemd's home is **Linux** — that's where every feature lives. **Windows**
-runs a compatibility port of the same manager + CLI + TUI stack, so the *shape*
-of things is familiar even if the plumbing underneath differs.
+# Platforms
 
 ## Linux
 
-Everything in this book applies. Highlights the Linux build adds:
+Linux provides the complete feature set:
 
-- **cgroup v2 supervision** — each service runs in its own subtree, so `stop`
-  takes down the whole tree (even children that tried to escape their process
-  group).
-- **Socket activation** the systemd way — listeners passed to the service via
-  `LISTEN_FDS`, so inetd-style handoff works.
-- **D-Bus** — rystemd talks to the system/user bus and, when no real systemd is
-  present, serves an `org.freedesktop.systemd1`-compatible surface so
-  systemd-aware tooling can connect.
-- **udev device tracking** — `.device` units discovered from the kernel so
-  services can order after hardware.
-- **The PID-1 boot path** — see [Booting the machine itself](pid1.md).
+- cgroup v2 process supervision
+- process-group fallback
+- socket activation through `LISTEN_FDS` and `LISTEN_PID`
+- partial D-Bus compatibility
+- runtime device units from udev and netlink
+- service sandboxing
+- PID 1 boot support
+
+See [Running as PID 1](pid1.md) before changing a boot configuration.
 
 ## Windows
 
-Windows is a *compatibility port*: same unit language, same `rystemctl`
-commands, backed by native Win32 primitives. Two ways to run the manager:
+Windows uses the same unit language and clients with a smaller manager feature
+set.
 
-**Per-user** (no elevation needed):
+User manager:
 
 ```powershell
 rystemd.exe daemon --user
 rystemctl.exe --user start hello.service
 ```
 
-User units live under `%LOCALAPPDATA%\rystemd\`. For example:
+User units live under `%LOCALAPPDATA%\rystemd\`.
 
-```ini
-[Unit]
-Description=Windows worker
-
-[Service]
-Type=simple
-ExecStart=C:\Tools\worker.exe --serve
-Restart=on-failure
-```
-
-**As a native Windows service** (elevated):
+Windows service manager:
 
 ```powershell
-rystemd.exe service install            # automatic start
-# or: rystemd.exe service install --manual
+rystemd.exe service install
 sc.exe start rystemd
 rystemctl.exe list-units
 sc.exe stop rystemd
@@ -57,22 +40,15 @@ rystemd.exe service uninstall
 
 System units live under `%ProgramData%\rystemd\`.
 
-### What works differently
-
-| | Windows |
+| Function | Windows behavior |
 | --- | --- |
-| Process supervision | Win32 **Job Object** (kill-on-close for the whole tree) |
+| Process supervision | Win32 Job Objects |
 | Service types | `simple`, `exec`, `idle`, `oneshot` |
-| Timers & targets | Yes |
-| TCP socket trigger | Yes — launch-on-connection (no `LISTEN_FDS` handoff) |
-| `MemoryMax=` / `TasksMax=` | Win32 Job Object limits |
-| `forking` / `notify` / `dbus` types | Explicit error |
-| `User=` / `Group=` | Explicit error |
-| Unix sockets, cgroups, mounts, devices, boot path | Linux only |
+| Timers and targets | Supported |
+| TCP socket trigger | Launch on connection, without `LISTEN_FDS` |
+| `MemoryMax=` and `TasksMax=` | Win32 Job Object limits |
+| `forking`, `notify`, `dbus` | Unsupported |
+| `User=` and `Group=` | Unsupported |
+| Mount, device, cgroup, PID 1 | Linux only |
 
-The parts that aren't supported on Windows fail *explicitly* — they're reported
-as errors, not silently ignored, so you're never guessing why something didn't
-run.
-
-Next: the straight story on what is and isn't supported —
-[Compatibility & known issues](compatibility.md).
+Unsupported Windows settings return errors.

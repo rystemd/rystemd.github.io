@@ -1,123 +1,97 @@
-# Installing rystemd
+# Installing
 
-Every path below installs the three binaries — `rystemd` (the manager),
-`rystemctl` (the `systemctl`-compatible CLI), and `rystemd-tui` (the terminal
-client). Pick the one that matches your platform.
+Releases contain `rystemd`, `rystemctl`, and `rystemd-tui`. Download only from
+the [GitHub release page](https://github.com/rystemd/rystemd/releases) or a
+package definition that points to those release assets.
 
-Installers are published as GitHub **release assets**; a package manager's job
-is to fetch and place those. One-command installs below.
+## Fedora, RHEL, and CentOS
 
-## Linux
-
-### Fedora / RHEL / CentOS (rpm)
-
-Grab the rpm for your architecture (`x86_64` or `aarch64`) from the
-[release page](https://github.com/rystemd/rystemd/releases) and install it:
+Download the RPM matching the architecture, then install it:
 
 ```sh
-sudo dnf install ./rystemd-<ver>-1.x86_64.rpm    # or -aarch64.rpm
+sudo dnf install ./rystemd-<version>-1.x86_64.rpm
 ```
 
-This places all three binaries in `/usr/bin` and registers them with rpm/dnf
-for upgrade and removal.
+Use the `aarch64` RPM on ARM64. The package installs the three binaries under
+`/usr/bin`.
 
-### Debian / Ubuntu / Mint (deb)
-
-Install the matching `.deb` from the
-[release page](https://github.com/rystemd/rystemd/releases):
+On rpm-ostree systems, layer the same RPM into a new deployment:
 
 ```sh
-sudo apt install ./rystemd-<ver>-amd64.deb       # or -arm64.deb
+rpm-ostree install ./rystemd-<version>-1.x86_64.rpm
+rpm-ostree status
 ```
 
-Binaries land in `/usr/bin`; shell completions are installed to the standard
-bash/zsh/fish completion directories.
+The currently booted deployment is unchanged. A reboot selects the new
+deployment.
 
-> The `.deb`/`.rpm` are built straight from the same `scripts/package-linux.sh`
-> that CI runs on every tag, so they are source-identical to the release.
+## Debian and Ubuntu
 
-### Homebrew (also good for immutable systems)
+```sh
+sudo apt install ./rystemd-<version>-amd64.deb
+```
 
-On Linux — including immutable Bazzite/Fedora-Atomic/Silverblue — install from
-the rystemd tap without layering via `rpm-ostree`:
+Use the `arm64` package on ARM64.
+
+## Alpine Linux
+
+The APK targets Alpine and musl.
+
+```sh
+apk add --no-cache --allow-untrusted --force-non-repository \
+  https://github.com/rystemd/rystemd/releases/latest/download/rystemd-x86_64.apk
+```
+
+Use `rystemd-aarch64.apk` on ARM64. Current APKs are unsigned. The package
+includes a `systemctl` symlink. It does not replace OpenRC or change the boot
+configuration.
+
+## Homebrew
+
+Homebrew is the simplest installation method on immutable Fedora variants when
+PID 1 replacement is not required.
 
 ```sh
 brew tap rystemd/rystemd
 brew install rystemd
 ```
 
-On an immutable image, Homebrew installs into its own prefix
-(`/home/linuxbrew/.linuxbrew`) rather than touching the read-only `/usr`, so no
-`rpm-ostree` layer or reboot is needed. The formula installs all three binaries
-plus shell completions. It deliberately does **not** create a `systemctl`
-symlink — on a systemd host that would shadow the real `systemctl` on your
-PATH.
+Homebrew installs under its own prefix. It does not create a `systemctl`
+symlink and does not configure rystemd as PID 1.
 
-> Other package managers on an ostree host will try to write into the
-> read-only system image. Prefer Homebrew there.
+## Portable archives
 
-### Portable tarball (any distro)
-
-Extract `rystemd-<ver>-<triple>.tar.gz` and add `bin/` to your `PATH`:
+Linux:
 
 ```sh
-tar -xzf rystemd-<ver>-x86_64-unknown-linux-gnu.tar.gz
-export PATH="$PWD/rystemd-<ver>-x86_64-unknown-linux-gnu/bin:$PATH"
+tar -xzf rystemd-<version>-x86_64-unknown-linux-gnu.tar.gz
+export PATH="$PWD/rystemd-<version>-x86_64-unknown-linux-gnu/bin:$PATH"
 ```
 
-The tarball's `bin/` contains the three executables, a `systemctl` symlink to
-`rystemctl`, and the shell completion scripts. Use the `aarch64` tarball on
-ARM64 hosts.
+The Linux archive includes `systemctl -> rystemctl`. Use the `aarch64` archive
+on ARM64.
 
-### From source (any distro)
+Windows releases include a portable zip, MSI, Scoop package, and NuGet package.
 
-Build from the [source repo](https://github.com/rystemd/rystemd):
-
-```sh
-cargo build --release
-# binaries in target/release/: rystemd, rystemctl, rystemd-tui
-```
-
-## Windows
-
-### Scoop (recommended)
-
-The portable build is packaged as a [Scoop](https://scoop.sh) bucket
-([`rystemd/scoop-rystemd`](https://github.com/rystemd/scoop-rystemd)):
+Scoop:
 
 ```powershell
 scoop bucket add rystemd https://github.com/rystemd/scoop-rystemd
-scoop install rystemd/rystemd     # places rystemd, rystemctl, rystemd-tui on PATH
+scoop install rystemd/rystemd
 ```
 
-`checkver`/`autoupdate` are wired to the GitHub release stream, so `scoop
-update` pulls new versions automatically on tag pushes.
-
-### MSI (machine-wide)
-
-Install `rystemd-<ver>-x86_64.msi` (an executable installer or
-`msiexec /i rystemd-<ver>-x86_64.msi`). It places all three executables under
-`%ProgramFiles%\rystemd` and registers with the Windows Installer for
-upgrade/removal.
-
-### NuGet (automation / private feeds)
-
-The release ships `rystemd.<ver>.nupkg` as a **native tools package**:
+NuGet:
 
 ```powershell
 nuget install rystemd -OutputDirectory ./rystemd-pkg
-# exes land under ./rystemd-pkg/rystemd.<ver>/tools/*
 ```
 
-It ships the executables but does not shim `PATH` or register a service. Prefer
-Scoop for an end-user PATH-installed setup, or the MSI for machine-wide.
+NuGet does not update `PATH` or register a service.
 
-### Portable zip
+## Source builds
 
-Extract `rystemd-<ver>-x86_64-pc-windows-msvc.zip` to a folder you add to
-`PATH`. This is the same archive Scoop and the MSI are built from.
+Source build and validation commands are maintained in the repository
+[`DEV.md`](https://github.com/rystemd/rystemd/blob/main/DEV.md).
 
-## Next
-
-Once installed, open the manager for your own user (no root required) and poke
-it — see [Getting started](getting-started.md).
+Installation does not replace the machine init. See
+[Running as PID 1](pid1.md) for the separate boot procedure.

@@ -1,35 +1,24 @@
-# Driving it: CLI, TUI, and the library
+# Control interfaces
 
-Three ways to talk to a running manager, from most everyday to most programmatic.
-
-## The CLI (`rystemctl`)
-
-`rystemctl` mirrors what you'd reach for from `systemctl`:
+## Command line
 
 ```sh
-rystemctl --user start hello
-rystemctl --user stop hello
-rystemctl --user restart hello
-rystemctl --user status hello
-rystemctl --user is-active hello
-rystemctl --user is-failed hello
+rystemctl --user start hello.service
+rystemctl --user stop hello.service
+rystemctl --user restart hello.service
+rystemctl --user status hello.service
+rystemctl --user is-active hello.service
+rystemctl --user is-failed hello.service
 rystemctl --user daemon-reload
 rystemctl --user list-units
 rystemctl --user list-timers
-rystemctl --user journal hello       # the unit's captured output
+rystemctl --user journal hello.service
 ```
 
-On Linux, symlink it as `systemctl` and drop-in scripts work unchanged:
+The manager and client communicate through a local socket. Linux builds may
+also expose a partial `org.freedesktop.systemd1` D-Bus surface.
 
-```sh
-ln -s "$(command -v rystemctl)" ~/.local/bin/systemctl
-```
-
-> The manager and CLI are separate processes talking over a local socket, so
-> there's no shell or D-Bus dependency between them. (A D-Bus surface exists
-> too, and is what tooling that expects `org.freedesktop.systemd1` can talk to.)
-
-**Shell completions** are built in:
+Shell completions:
 
 ```sh
 rystemctl completions bash
@@ -39,46 +28,36 @@ rystemctl completions powershell
 rystemctl completions nushell
 ```
 
-## The TUI (`rystemd-tui`)
-
-A live, tabbed terminal view of the manager — **Units**, **Services**,
-**Timers**, and **Unit files**, each with a status pane:
+## Terminal interface
 
 ```sh
 rystemd-tui --user
 ```
 
-It connects to an already-running manager (it never starts a second one) and
-detects the socket on its own. Keys are one-letter and obvious:
+The TUI connects to an existing manager.
 
 | Key | Action |
 | --- | --- |
-| `Tab` | switch tab |
-| `↑`/`↓`/`j`/`k` | move |
-| `/` | filter |
-| `s` `x` `r` | start / stop / restart |
-| `e` `d` | enable / disable |
-| `R` | daemon-reload |
-| `f` | refresh |
-| `q` / `Esc` | quit |
+| `Tab` | Change tab |
+| `Up`, `Down`, `j`, `k` | Move selection |
+| `/` | Filter |
+| `s`, `x`, `r` | Start, stop, restart |
+| `e`, `d` | Enable, disable |
+| `R` | Reload units |
+| `f` | Refresh |
+| `q`, `Esc` | Quit |
 
-## The library
-
-If you're writing Rust and want to drive the manager from code, the same
-interface the CLI uses is public:
+## Rust API
 
 ```rust
 use rystemd::control::{Control, SocketClient};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // true = user manager, false = system manager.
     let mut ctl = SocketClient::for_mode(true)?;
-
     ctl.start(&["hello.service"])?;
-    ctl.restart(&["hello.service"])?;
 
-    for s in ctl.status(&["hello.service"])? {
-        println!("{}: {}/{}", s.name, s.active, s.sub);
+    for status in ctl.status(&["hello.service"])? {
+        println!("{}: {}/{}", status.name, status.active, status.sub);
     }
 
     ctl.stop(&["hello.service"])?;
@@ -86,9 +65,4 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-The same `Control` trait is implemented both by the in-process `Manager` and by
-`SocketClient`, so your code can target either — swap the backend without
-changing the call sites.
-
-Next: go further upstream and manage the machine itself —
-[Booting the machine itself](pid1.md).
+`Manager` and `SocketClient` implement the same `Control` trait.
