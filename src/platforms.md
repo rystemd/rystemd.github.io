@@ -1,5 +1,36 @@
 # Platforms
 
+## Feature matrix
+
+`Partial` means that the feature exists with documented limits. `No` means no
+supported implementation.
+
+| Feature | Linux | Windows | macOS |
+| --- | --- | --- | --- |
+| Manager daemon | Yes | Yes | No |
+| `rystemctl` client | Yes | Yes | No |
+| `rystemd-tui` | Yes | Yes | No |
+| Service units | Yes | Partial | No |
+| Timer and target units | Yes | Yes | No |
+| Socket activation | Yes | Partial | No |
+| Path units | Yes | No | No |
+| Mount units | Yes | No | No |
+| Device units | Yes | No | No |
+| Process-tree supervision | cgroup v2 or process groups | Win32 Job Objects | No |
+| Resource limits | cgroup v2 and POSIX limits | Win32 Job Objects | No |
+| Service sandboxing | Partial | No | No |
+| `User=` and `Group=` | Yes | No | No |
+| D-Bus integration | Partial | No | No |
+| Native system-service integration | PID 1 | Windows Service Control Manager | No |
+| PID 1 boot | Experimental | No | No |
+| Release artifacts | GNU, musl, RPM, DEB, APK, tar | MSI, zip, Scoop, NuGet | No |
+
+Windows service support covers `simple`, `exec`, `idle`, and `oneshot`.
+Windows socket activation starts a service on TCP connection but does not pass
+listeners through `LISTEN_FDS`.
+
+macOS has no tested port, release artifact, or compatibility guarantee.
+
 ## Linux
 
 Linux provides the complete feature set:
